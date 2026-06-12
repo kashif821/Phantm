@@ -1,5 +1,5 @@
+from openai import OpenAIError
 from litellm import completion
-from litellm.exceptions import OpenAIError
 from phantm.config.settings import PhantmSettings
 
 

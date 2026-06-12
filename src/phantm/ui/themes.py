@@ -1,0 +1,5 @@
+COLOR_DANGER = "red"
+COLOR_WARNING = "yellow"
+COLOR_SUCCESS = "green"
+COLOR_INFO = "cyan"
+COLOR_DIM = "dim"

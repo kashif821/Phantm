@@ -30,6 +30,10 @@ def _ensure_phantm_dir() -> None:
         (phantm_dir / ".env").touch()
         (phantm_dir / "config.toml").write_text("")
 
+    from phantm._internal.db import init_db
+
+    init_db()
+
 
 from phantm.config.cmd import app as config_app
 from phantm.scan.cmd import app as scan_app

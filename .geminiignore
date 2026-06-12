@@ -1,0 +1,98 @@
+# ==============================================================================
+# .geminiignore - Context Window FinOps
+# ==============================================================================
+
+# 1. OS & IDE
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+*.iml
+.gradle/
+local.properties
+.history/
+
+# 2. Dependencies & Lock Files
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+vendor/
+composer.lock
+venv/
+.venv/
+env/
+.env
+.env.*
+!.env.example
+poetry.lock
+Cargo.lock
+pubspec.lock
+
+# 3. Build Output
+dist/
+build/
+out/
+target/
+.next/
+.nuxt/
+.output/
+bin/
+obj/
+
+# 4. Caches
+.vite/
+.parcel-cache/
+.eslintcache
+.babel-cache/
+.tsbuildinfo
+.turbo/
+.pytest_cache/
+.ruff_cache/
+storage/framework/
+storage/logs/
+
+# 5. Binary & Media
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.svg
+*.ico
+*.psd
+*.fig
+*.pdf
+*.zip
+*.tar.gz
+*.woff
+*.woff2
+*.ttf
+
+# 6. Databases & Logs
+*.log
+*.db
+*.sqlite
+*.sqlite3
+*.sql
+*.sql.gz
+
+# 7. Compiled Artifacts
+*.apk
+*.aab
+*.ipa
+*.jar
+*.class
+*.pyc
+__pycache__/
+*.so
+*.dylib
+*.dll
+*.exe
+*.js.map
+*.css.map

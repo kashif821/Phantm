@@ -1,0 +1,1202 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {
+    "hyperedges": [
+      {
+        "id": "graph_building_pipeline",
+        "label": "Graph Building Pipeline",
+        "nodes": [
+          "graphify_skill_astextraction",
+          "graphify_skill_semanticextraction",
+          "graphify_skill_subagentdispatch",
+          "graphify_skill_communitydetection",
+          "graphify_skill_godnodes",
+          "graphify_skill_knowledgegraph"
+        ],
+        "relation": "form",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": ".claude/skills/graphify/SKILL.md"
+      },
+      {
+        "id": "graph_query_system",
+        "label": "Graph Query System",
+        "nodes": [
+          "references_query_queryexpansion",
+          "references_query_bfstraversal",
+          "references_query_dfstraversal",
+          "graphify_skill_knowledgegraph"
+        ],
+        "relation": "form",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": ".claude/skills/graphify/references/query.md"
+      },
+      {
+        "id": "graph_maintenance",
+        "label": "Graph Maintenance",
+        "nodes": [
+          "references_update_incrementalupdate",
+          "references_hooks_postcommithook",
+          "references_add_watch_filewatcher",
+          "references_github_and_merge_crossrepomerge"
+        ],
+        "relation": "form",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": ".claude/skills/graphify/references/update.md"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "src/phantm/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "phantm_init",
+      "community": 9,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "src/phantm/_internal/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "internal_init",
+      "community": 8,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "src/phantm/config/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "config_init",
+      "community": 7,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "cmd.py",
+      "file_type": "code",
+      "source_file": "src/phantm/config/cmd.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "config_cmd",
+      "community": 2,
+      "norm_label": "cmd.py"
+    },
+    {
+      "label": "show()",
+      "file_type": "code",
+      "source_file": "src/phantm/config/cmd.py",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "config_cmd_show",
+      "community": 2,
+      "norm_label": "show()"
+    },
+    {
+      "label": "set()",
+      "file_type": "code",
+      "source_file": "src/phantm/config/cmd.py",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "config_cmd_set",
+      "community": 3,
+      "norm_label": "set()"
+    },
+    {
+      "label": "Show current configuration.",
+      "file_type": "rationale",
+      "source_file": "src/phantm/config/cmd.py",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "config_cmd_rationale_11",
+      "community": 2,
+      "norm_label": "show current configuration."
+    },
+    {
+      "label": "Set a configuration value.",
+      "file_type": "rationale",
+      "source_file": "src/phantm/config/cmd.py",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "config_cmd_rationale_18",
+      "community": 3,
+      "norm_label": "set a configuration value."
+    },
+    {
+      "label": "mutator.py",
+      "file_type": "code",
+      "source_file": "src/phantm/config/mutator.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "config_mutator",
+      "community": 3,
+      "norm_label": "mutator.py"
+    },
+    {
+      "label": "load_config()",
+      "file_type": "code",
+      "source_file": "src/phantm/config/mutator.py",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "config_mutator_load_config",
+      "community": 3,
+      "norm_label": "load_config()"
+    },
+    {
+      "label": "Path",
+      "file_type": "code",
+      "source_file": "src/phantm/config/mutator.py",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "path",
+      "community": 3,
+      "norm_label": "path"
+    },
+    {
+      "label": "save_config()",
+      "file_type": "code",
+      "source_file": "src/phantm/config/mutator.py",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "config_mutator_save_config",
+      "community": 3,
+      "norm_label": "save_config()"
+    },
+    {
+      "label": "settings.py",
+      "file_type": "code",
+      "source_file": "src/phantm/config/settings.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "config_settings",
+      "community": 2,
+      "norm_label": "settings.py"
+    },
+    {
+      "label": "PhantmSettings",
+      "file_type": "code",
+      "source_file": "src/phantm/config/settings.py",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "config_settings_phantmsettings",
+      "community": 2,
+      "norm_label": "phantmsettings"
+    },
+    {
+      "label": "BaseSettings",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "basesettings",
+      "community": 2,
+      "norm_label": "basesettings"
+    },
+    {
+      "label": "main.py",
+      "file_type": "code",
+      "source_file": "src/phantm/main.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "phantm_main",
+      "community": 5,
+      "norm_label": "main.py"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "src/phantm/main.py",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "phantm_main_main",
+      "community": 5,
+      "norm_label": "main()"
+    },
+    {
+      "label": "Context",
+      "file_type": "code",
+      "source_file": "src/phantm/main.py",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "context",
+      "community": 5,
+      "norm_label": "context"
+    },
+    {
+      "label": "_ensure_phantm_dir()",
+      "file_type": "code",
+      "source_file": "src/phantm/main.py",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "phantm_main_ensure_phantm_dir",
+      "community": 5,
+      "norm_label": "_ensure_phantm_dir()"
+    },
+    {
+      "label": "Phantm - Security scanner for LLM-generated code.",
+      "file_type": "rationale",
+      "source_file": "src/phantm/main.py",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "phantm_main_rationale_12",
+      "community": 5,
+      "norm_label": "phantm - security scanner for llm-generated code."
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "src/phantm/report/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "report_init",
+      "community": 10,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "src/phantm/rules/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "rules_init",
+      "community": 11,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "src/phantm/scan/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scan_init",
+      "community": 12,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "cmd.py",
+      "file_type": "code",
+      "source_file": "src/phantm/scan/cmd.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scan_cmd",
+      "community": 4,
+      "norm_label": "cmd.py"
+    },
+    {
+      "label": "run()",
+      "file_type": "code",
+      "source_file": "src/phantm/scan/cmd.py",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "scan_cmd_run",
+      "community": 4,
+      "norm_label": "run()"
+    },
+    {
+      "label": "Run a security scan on the given path.",
+      "file_type": "rationale",
+      "source_file": "src/phantm/scan/cmd.py",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "scan_cmd_rationale_9",
+      "community": 4,
+      "norm_label": "run a security scan on the given path."
+    },
+    {
+      "label": "engine.py",
+      "file_type": "code",
+      "source_file": "src/phantm/scan/engine.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scan_engine",
+      "community": 4,
+      "norm_label": "engine.py"
+    },
+    {
+      "label": "run_scan()",
+      "file_type": "code",
+      "source_file": "src/phantm/scan/engine.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scan_engine_run_scan",
+      "community": 4,
+      "norm_label": "run_scan()"
+    },
+    {
+      "label": "Execute the scanning logic.",
+      "file_type": "rationale",
+      "source_file": "src/phantm/scan/engine.py",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "scan_engine_rationale_2",
+      "community": 4,
+      "norm_label": "execute the scanning logic."
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "src/phantm/ui/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "ui_init",
+      "community": 13,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "Graphify",
+      "file_type": "concept",
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "graphify_skill_graphify",
+      "community": 1,
+      "norm_label": "graphify"
+    },
+    {
+      "label": "Phantm",
+      "file_type": "concept",
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "agents_phantm",
+      "community": 1,
+      "norm_label": "phantm"
+    },
+    {
+      "label": "Knowledge Graph",
+      "file_type": "concept",
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "graphify_skill_knowledgegraph",
+      "community": 0,
+      "norm_label": "knowledge graph"
+    },
+    {
+      "label": "AST Extraction",
+      "file_type": "rationale",
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "graphify_skill_astextraction",
+      "community": 0,
+      "norm_label": "ast extraction"
+    },
+    {
+      "label": "Semantic Extraction",
+      "file_type": "rationale",
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "graphify_skill_semanticextraction",
+      "community": 0,
+      "norm_label": "semantic extraction"
+    },
+    {
+      "label": "Community Detection",
+      "file_type": "concept",
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "graphify_skill_communitydetection",
+      "community": 0,
+      "norm_label": "community detection"
+    },
+    {
+      "label": "God Nodes",
+      "file_type": "concept",
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "graphify_skill_godnodes",
+      "community": 0,
+      "norm_label": "god nodes"
+    },
+    {
+      "label": "Honesty Rules",
+      "file_type": "rationale",
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "graphify_skill_honestyrules",
+      "community": 0,
+      "norm_label": "honesty rules"
+    },
+    {
+      "label": "Confidence Score Rubric",
+      "file_type": "rationale",
+      "source_file": ".claude/skills/graphify/references/extraction-spec.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "references_extraction_spec_confidence_scorerubric",
+      "community": 0,
+      "norm_label": "confidence score rubric"
+    },
+    {
+      "label": "Subagent Dispatch",
+      "file_type": "rationale",
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "graphify_skill_subagentdispatch",
+      "community": 0,
+      "norm_label": "subagent dispatch"
+    },
+    {
+      "label": "Incremental Update",
+      "file_type": "concept",
+      "source_file": ".claude/skills/graphify/references/update.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "references_update_incrementalupdate",
+      "community": 6,
+      "norm_label": "incremental update"
+    },
+    {
+      "label": "Query Expansion",
+      "file_type": "rationale",
+      "source_file": ".claude/skills/graphify/references/query.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "references_query_queryexpansion",
+      "community": 0,
+      "norm_label": "query expansion"
+    },
+    {
+      "label": "BFS Traversal",
+      "file_type": "concept",
+      "source_file": ".claude/skills/graphify/references/query.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "references_query_bfstraversal",
+      "community": 0,
+      "norm_label": "bfs traversal"
+    },
+    {
+      "label": "DFS Traversal",
+      "file_type": "concept",
+      "source_file": ".claude/skills/graphify/references/query.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "references_query_dfstraversal",
+      "community": 0,
+      "norm_label": "dfs traversal"
+    },
+    {
+      "label": "Whisper Transcription",
+      "file_type": "concept",
+      "source_file": ".claude/skills/graphify/references/transcribe.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "references_transcribe_whispertranscription",
+      "community": 0,
+      "norm_label": "whisper transcription"
+    },
+    {
+      "label": "Post-Commit Hook",
+      "file_type": "concept",
+      "source_file": ".claude/skills/graphify/references/hooks.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "references_hooks_postcommithook",
+      "community": 6,
+      "norm_label": "post-commit hook"
+    },
+    {
+      "label": "CLAUDE.md Integration",
+      "file_type": "concept",
+      "source_file": ".claude/skills/graphify/references/hooks.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "references_hooks_claudemdintegration",
+      "community": 1,
+      "norm_label": "claude.md integration"
+    },
+    {
+      "label": "Cross-Repo Merge",
+      "file_type": "concept",
+      "source_file": ".claude/skills/graphify/references/github-and-merge.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "references_github_and_merge_crossrepomerge",
+      "community": 0,
+      "norm_label": "cross-repo merge"
+    },
+    {
+      "label": "File Watcher",
+      "file_type": "concept",
+      "source_file": ".claude/skills/graphify/references/add-watch.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "references_add_watch_filewatcher",
+      "community": 6,
+      "norm_label": "file watcher"
+    },
+    {
+      "label": "Src Layout",
+      "file_type": "rationale",
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "agents_srclayout",
+      "community": 1,
+      "norm_label": "src layout"
+    },
+    {
+      "label": "First-Run Init",
+      "file_type": "rationale",
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "agents_firstruninit",
+      "community": 1,
+      "norm_label": "first-run init"
+    },
+    {
+      "label": "Package Boundaries",
+      "file_type": "rationale",
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "agents_packageboundaries",
+      "community": 1,
+      "norm_label": "package boundaries"
+    },
+    {
+      "label": "Graphify Integration",
+      "file_type": "concept",
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "claude_graphifyintegration",
+      "community": 1,
+      "norm_label": "graphify integration"
+    },
+    {
+      "label": "Graphify Trigger",
+      "file_type": "concept",
+      "source_file": ".claude/CLAUDE.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "claude_claude_graphifytrigger",
+      "community": 1,
+      "norm_label": "graphify trigger"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/config/cmd.py",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "config_cmd",
+      "target": "config_cmd_set",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/config/cmd.py",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "config_cmd",
+      "target": "config_cmd_show",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/config/cmd.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "config_cmd_rationale_11",
+      "target": "config_cmd_show",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src/phantm/config/cmd.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "config_cmd_show",
+      "target": "config_settings_phantmsettings"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/config/cmd.py",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "config_cmd_rationale_18",
+      "target": "config_cmd_set",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src/phantm/config/cmd.py",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "config_cmd_set",
+      "target": "config_mutator_load_config"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src/phantm/config/cmd.py",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "config_cmd_set",
+      "target": "config_mutator_save_config"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/config/mutator.py",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "config_mutator",
+      "target": "config_mutator_load_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/config/mutator.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "config_mutator",
+      "target": "config_mutator_save_config",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/config/mutator.py",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "config_mutator_load_config",
+      "target": "path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/config/mutator.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "config_mutator_save_config",
+      "target": "path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/config/settings.py",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "config_settings",
+      "target": "config_settings_phantmsettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/config/settings.py",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "config_settings_phantmsettings",
+      "target": "basesettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/main.py",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "phantm_main",
+      "target": "phantm_main_ensure_phantm_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/main.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "phantm_main",
+      "target": "phantm_main_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/main.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "phantm_main_main",
+      "target": "context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/main.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "phantm_main_main",
+      "target": "phantm_main_ensure_phantm_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/main.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "phantm_main_rationale_12",
+      "target": "phantm_main_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/scan/cmd.py",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "scan_cmd",
+      "target": "scan_cmd_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/scan/cmd.py",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "scan_cmd_rationale_9",
+      "target": "scan_cmd_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src/phantm/scan/cmd.py",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "scan_cmd_run",
+      "target": "scan_engine_run_scan"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/scan/engine.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "scan_engine",
+      "target": "scan_engine_run_scan",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/phantm/scan/engine.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "scan_engine_rationale_2",
+      "target": "scan_engine_run_scan",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_claude_graphifytrigger",
+      "target": "graphify_skill_graphify"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "claude_graphifyintegration",
+      "target": "graphify_skill_graphify"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "graphify_skill_graphify",
+      "target": "graphify_skill_knowledgegraph"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "agents_phantm",
+      "target": "agents_firstruninit"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "agents_phantm",
+      "target": "agents_packageboundaries"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "agents_phantm",
+      "target": "agents_srclayout"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "agents_phantm",
+      "target": "claude_graphifyintegration"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "graphify_skill_astextraction",
+      "target": "graphify_skill_knowledgegraph"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "graphify_skill_communitydetection",
+      "target": "graphify_skill_knowledgegraph"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "graphify_skill_honestyrules",
+      "target": "graphify_skill_knowledgegraph"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "graphify_skill_semanticextraction",
+      "target": "graphify_skill_knowledgegraph"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/references/github-and-merge.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "references_github_and_merge_crossrepomerge",
+      "target": "graphify_skill_knowledgegraph"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/references/query.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "references_query_bfstraversal",
+      "target": "graphify_skill_knowledgegraph"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/references/query.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "references_query_dfstraversal",
+      "target": "graphify_skill_knowledgegraph"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/references/query.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "references_query_queryexpansion",
+      "target": "graphify_skill_knowledgegraph"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/references/update.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "references_update_incrementalupdate",
+      "target": "graphify_skill_knowledgegraph"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "graphify_skill_subagentdispatch",
+      "target": "graphify_skill_astextraction"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "graphify_skill_subagentdispatch",
+      "target": "graphify_skill_semanticextraction"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/references/transcribe.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "references_transcribe_whispertranscription",
+      "target": "graphify_skill_semanticextraction"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "graphify_skill_godnodes",
+      "target": "graphify_skill_communitydetection"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/references/extraction-spec.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "references_extraction_spec_confidence_scorerubric",
+      "target": "graphify_skill_honestyrules"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/SKILL.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "graphify_skill_subagentdispatch",
+      "target": "references_extraction_spec_confidence_scorerubric"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/references/hooks.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "references_hooks_postcommithook",
+      "target": "references_update_incrementalupdate"
+    },
+    {
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": ".claude/skills/graphify/references/hooks.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "references_hooks_postcommithook",
+      "target": "references_add_watch_filewatcher"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/references/hooks.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "references_hooks_claudemdintegration",
+      "target": "claude_graphifyintegration"
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "graph_building_pipeline",
+      "label": "Graph Building Pipeline",
+      "nodes": [
+        "graphify_skill_astextraction",
+        "graphify_skill_semanticextraction",
+        "graphify_skill_subagentdispatch",
+        "graphify_skill_communitydetection",
+        "graphify_skill_godnodes",
+        "graphify_skill_knowledgegraph"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/SKILL.md"
+    },
+    {
+      "id": "graph_query_system",
+      "label": "Graph Query System",
+      "nodes": [
+        "references_query_queryexpansion",
+        "references_query_bfstraversal",
+        "references_query_dfstraversal",
+        "graphify_skill_knowledgegraph"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/references/query.md"
+    },
+    {
+      "id": "graph_maintenance",
+      "label": "Graph Maintenance",
+      "nodes": [
+        "references_update_incrementalupdate",
+        "references_hooks_postcommithook",
+        "references_add_watch_filewatcher",
+        "references_github_and_merge_crossrepomerge"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/graphify/references/update.md"
+    }
+  ]
+}

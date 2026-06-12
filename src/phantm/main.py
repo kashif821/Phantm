@@ -37,6 +37,8 @@ def _ensure_phantm_dir() -> None:
 
 from phantm.config.cmd import app as config_app
 from phantm.scan.cmd import app as scan_app
+from phantm.report.cmd import app as report_app
 
 app.add_typer(config_app, name="config")
 app.add_typer(scan_app, name="scan")
+app.add_typer(report_app, name="report")

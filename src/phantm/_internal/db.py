@@ -109,6 +109,16 @@ def get_recent_scans(limit: int = 10) -> list[dict]:
     return [dict(r) for r in rows]
 
 
+def get_findings_for_scan(scan_id: int) -> list[dict]:
+    conn = _connection()
+    rows = conn.execute(
+        "SELECT * FROM findings WHERE scan_id = ? ORDER BY severity, line",
+        (scan_id,),
+    ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
 def record_finding(
     scan_id: int,
     file_path: str,

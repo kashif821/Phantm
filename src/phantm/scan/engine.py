@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 from phantm._internal.llm import ask_model, PhantmLLMError
-from phantm._internal.db import record_scan
+from phantm._internal.db import record_scan, record_finding
 from phantm.ui.components.feedback import print_info, print_error, print_success, print_warning
 from phantm.ui.layouts.scan_report import render_scan_summary
 from phantm.ui.console import console
@@ -35,11 +35,23 @@ def run_scan(path: str) -> None:
     findings_count = 1 if has_issue else 0
     exit_code = 1 if has_issue else 0
 
+    scan_id = record_scan(str(target), exit_code)
+
     if findings_count:
         print_warning(f"Potential issues detected in {target.name}")
+        record_finding(
+            scan_id=scan_id,
+            file_path=str(target),
+            severity="high",
+            type="hallucinated_api",
+            line=None,
+            description=response,
+            fix="Manual review required",
+            confidence="low",
+            source="llm",
+        )
     else:
         print_success(f"No obvious vulnerabilities found in {target.name}")
 
-    record_scan(str(target), findings_count, exit_code)
     render_scan_summary(str(target), findings_count, exit_code)
     sys.exit(exit_code)

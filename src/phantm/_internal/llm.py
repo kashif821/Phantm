@@ -1,4 +1,5 @@
 import os
+import re
 import litellm
 from dotenv import load_dotenv
 from openai import OpenAIError
@@ -15,7 +16,7 @@ class PhantmLLMError(Exception):
 def _load_env() -> None:
     env_path = os.path.expanduser("~/.phantm/.env")
     if os.path.isfile(env_path):
-        load_dotenv(env_path, override=True)
+        load_dotenv(env_path, override=False)
 
 
 def ask_model(
@@ -29,10 +30,19 @@ def ask_model(
         settings = PhantmSettings()
         model = settings.default_model
 
+    ALLOWED_PROVIDERS = {"CEREBRAS", "OPENROUTER", "NVIDIA", "OPENAI", "DEEPSEEK", "GROQ"}
+
     raw_provider = model.split("/")[0] if "/" in model else ""
     provider = "".join(char for char in raw_provider if char.isalnum()).upper()
-    key_name = f"{provider}_API_KEY" if provider else "_API_KEY"
-    dynamic_key = os.getenv(key_name) or os.getenv("OPENAI_API_KEY")
+
+    if not provider or provider not in ALLOWED_PROVIDERS:
+        raise ValueError(f"Security Rejection: Untrusted LLM provider '{provider}'")
+
+    if not re.match(r"^[a-zA-Z0-9\-]+/[a-zA-Z0-9\-\._]+$", model) or ".." in model:
+        raise ValueError("Security Rejection: Malformed model ID.")
+
+    key_name = f"{provider}_API_KEY" if provider else "OPENAI_API_KEY"
+    dynamic_key = os.getenv(key_name)
 
     messages = [
         {"role": "system", "content": system_prompt},

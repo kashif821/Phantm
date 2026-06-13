@@ -5,12 +5,14 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic_settings.sources import TomlConfigSettingsSource
 
 
-def _flatten(d: dict[str, Any], parent_key: str = "") -> dict[str, Any]:
+def _flatten(d: dict[str, Any], parent_key: str = "", depth: int = 0) -> dict[str, Any]:
+    if depth > 10:
+        raise ValueError("Security Violation: Configuration nesting is too deep (DoS prevention).")
     items: dict[str, Any] = {}
     for k, v in d.items():
         new_key = f"{parent_key}_{k}" if parent_key else k
         if isinstance(v, dict):
-            items.update(_flatten(v, new_key))
+            items.update(_flatten(v, new_key, depth + 1))
         else:
             items[new_key] = v
     return items
@@ -30,8 +32,8 @@ class PhantmSettings(BaseSettings):
     )
 
     github_token: Optional[str] = None
-    virustotal_api_key: Optional[str] = None
-    abuseipdb_api_key: Optional[str] = None
+    virustotal_api_key: Optional[str] = Field(default=None, repr=False)
+    abuseipdb_api_key: Optional[str] = Field(default=None, repr=False)
     nvd_api_key: Optional[str] = None
     default_model: str = "gpt-4o"
     cache_virustotal_ttl_hours: int = 24

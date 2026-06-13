@@ -10,6 +10,8 @@ from phantm.ui.console import console
 def get_scannable_files(target_dir: Path) -> list[Path]:
     files = []
     for path in target_dir.rglob("*.py"):
+        if path.is_symlink():
+            continue
         if any(part.startswith(".") for part in path.parts):
             continue
         if any(part in ("venv", "env", "__pycache__", "node_modules") for part in path.parts):

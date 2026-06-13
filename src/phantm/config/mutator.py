@@ -23,12 +23,28 @@ def _coerce(value: str) -> Any:
     return value
 
 
+ALLOWED_KEYS = {
+    "default_model",
+    "github_token",
+    "virustotal_api_key",
+    "abuseipdb_api_key",
+    "nvd_api_key",
+    "cache_virustotal_ttl_hours",
+    "cache_abuseipdb_ttl_hours",
+    "cache_nvd_ttl_days",
+}
+
+
 def set_config_value(key: str, value: str) -> None:
     config_path = Path.home() / ".phantm" / "config.toml"
 
-    if config_path.exists():
+    if key not in ALLOWED_KEYS:
+        print_error(f"Security Rejection: '{key}' is not a permitted configuration key.")
+        raise ValueError("Mass assignment blocked")
+
+    try:
         doc = tomlkit.parse(config_path.read_text())
-    else:
+    except FileNotFoundError:
         doc = tomlkit.document()
 
     parts = key.split(".")

@@ -26,11 +26,15 @@ def _ensure_phantm_dir() -> None:
     config_dir = Path.home() / ".phantm"
     config_file = config_dir / "config.toml"
 
-    if not config_dir.exists():
-        config_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        config_dir.mkdir(parents=True, exist_ok=False)
+    except FileExistsError:
+        pass
 
-    if not config_dir.is_symlink():
-        os.chmod(config_dir, 0o700)
+    if config_dir.is_symlink():
+        raise PermissionError("Security Rejection: Symlink detected.")
+
+    os.chmod(config_dir, 0o700)
 
     (config_dir / ".env").touch(exist_ok=True)
 

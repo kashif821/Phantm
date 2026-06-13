@@ -6,8 +6,11 @@ from pathlib import Path
 DB_PATH = Path.home() / ".phantm" / "phantm.db"
 
 
-def _connection() -> sqlite3.Connection:
-    conn = sqlite3.connect(str(DB_PATH))
+def _connection(db_path: Path | None = None) -> sqlite3.Connection:
+    path = db_path or DB_PATH
+    if not path.exists():
+        path.touch(mode=0o600)
+    conn = sqlite3.connect(str(path))
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON;")
     return conn
@@ -87,8 +90,8 @@ def record_scan(target_path: str, exit_code: int) -> int:
     return new_id
 
 
-def get_recent_scans(limit: int = 10) -> list[dict]:
-    conn = _connection()
+def get_recent_scans(limit: int = 10, db_path: Path | None = None) -> list[dict]:
+    conn = _connection(db_path)
     rows = conn.execute(
         """
         SELECT

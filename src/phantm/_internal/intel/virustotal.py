@@ -10,8 +10,9 @@ def check_artifact(artifact: str, artifact_type: str, api_key: str, ttl_hours: i
     if cached is not None:
         return cached
 
+    safe_type = urllib.parse.quote(artifact_type, safe="")
     safe_artifact = urllib.parse.quote(artifact, safe="")
-    url = f"https://www.virustotal.com/api/v3/{artifact_type}/{safe_artifact}"
+    url = f"https://www.virustotal.com/api/v3/{safe_type}/{safe_artifact}"
     resp = requests.get(
         url,
         headers={"x-apikey": api_key, "Accept": "application/json"},

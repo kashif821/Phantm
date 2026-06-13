@@ -1,8 +1,10 @@
 import typer
+from rich.markup import escape
 from rich.table import Table
 from rich.panel import Panel
 from rich import print as rprint
 from phantm.ui.console import console
+from phantm.ui.components.feedback import print_error
 from phantm.ui.themes import COLOR_DANGER, COLOR_WARNING, COLOR_INFO, COLOR_DIM
 from phantm.report.engine import get_latest_report_data
 
@@ -18,8 +20,9 @@ _SEVERITY_COLORS = {
 
 
 def _color_severity(severity: str) -> str:
-    color = _SEVERITY_COLORS.get(severity.lower(), COLOR_DIM)
-    return f"[{color}]{severity}[/]"
+    safe_severity = escape(severity)
+    color = _SEVERITY_COLORS.get(safe_severity.lower(), COLOR_DIM)
+    return f"[{color}]{safe_severity}[/]"
 
 
 @app.callback(invoke_without_command=True)

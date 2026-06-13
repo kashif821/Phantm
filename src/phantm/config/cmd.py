@@ -13,12 +13,9 @@ _SECRET_KEYS = {"github_token", "virustotal_api_key", "abuseipdb_api_key", "nvd_
 def _mask(key: str, value: Any | None) -> str:
     if value is None:
         return "[UNSET]"
-    s = str(value)
     if key in _SECRET_KEYS:
-        if len(s) <= 8:
-            return "********"
-        return f"{'*' * (len(s) - 4)}{s[-4:]}"
-    return s
+        return "********"
+    return str(value)
 
 
 @app.command()

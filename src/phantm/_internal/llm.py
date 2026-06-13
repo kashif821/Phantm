@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 from openai import OpenAIError
 from litellm import completion
 from phantm.config.settings import PhantmSettings
@@ -7,11 +9,19 @@ class PhantmLLMError(Exception):
     pass
 
 
+def _load_env() -> None:
+    env_path = os.path.expanduser("~/.phantm/.env")
+    if os.path.isfile(env_path):
+        load_dotenv(env_path, override=True)
+
+
 def ask_model(
     system_prompt: str,
     user_prompt: str,
     model: str | None = None,
 ) -> str:
+    _load_env()
+
     if model is None:
         settings = PhantmSettings()
         model = settings.default_model
@@ -22,7 +32,7 @@ def ask_model(
     ]
 
     try:
-        response = completion(model=model, messages=messages)
+        response = completion(model=model, messages=messages, num_retries=0)
     except OpenAIError as e:
         exc_type = type(e).__name__
         msg = str(e)
@@ -30,7 +40,10 @@ def ask_model(
         if "AuthenticationError" in exc_type or "auth" in msg.lower():
             hint = "authentication failed — check your API key"
         elif "RateLimitError" in exc_type or "rate_limit" in msg.lower():
-            hint = "rate limit exceeded — try again later"
+            hint = (
+                f"dynamic provider rate limit hit ({model}) "
+                f"— check your plan or wait before retrying"
+            )
         elif "APIConnectionError" in exc_type or "connection" in msg.lower():
             hint = "network error — check your connection"
         else:

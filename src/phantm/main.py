@@ -23,12 +23,11 @@ def main(ctx: typer.Context) -> None:
 
 
 def _ensure_phantm_dir() -> None:
-    phantm_dir = Path.home() / ".phantm"
-    if not phantm_dir.exists():
-        phantm_dir.mkdir()
-        os.chmod(phantm_dir, 0o700)
-        (phantm_dir / ".env").touch()
-        (phantm_dir / "config.toml").write_text("")
+    config_dir = Path.home() / ".phantm"
+    config_dir.mkdir(parents=True, exist_ok=True)
+    os.chmod(config_dir, 0o700)
+    (config_dir / ".env").touch(exist_ok=True)
+    (config_dir / "config.toml").write_text("")
 
     from phantm._internal.db import init_db
 

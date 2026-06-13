@@ -1,8 +1,11 @@
 import os
+import litellm
 from dotenv import load_dotenv
 from openai import OpenAIError
 from litellm import completion
 from phantm.config.settings import PhantmSettings
+
+litellm.suppress_debug_info = True
 
 
 class PhantmLLMError(Exception):
@@ -32,7 +35,7 @@ def ask_model(
     ]
 
     try:
-        response = completion(model=model, messages=messages, num_retries=0, timeout=10)
+        response = completion(model=model, messages=messages, num_retries=2, timeout=45)
     except OpenAIError as e:
         exc_type = type(e).__name__
         msg = str(e)
@@ -40,12 +43,9 @@ def ask_model(
         if "AuthenticationError" in exc_type or "auth" in msg.lower():
             hint = "authentication failed — check your API key"
         elif "RateLimitError" in exc_type or "rate_limit" in msg.lower():
-            hint = (
-                f"dynamic provider rate limit hit ({model}) "
-                f"— check your plan or wait before retrying"
-            )
+            hint = f"dynamic provider rate limit hit ({model}) — check your plan"
         elif "Timeout" in exc_type or "timeout" in msg.lower():
-            hint = f"LLM provider timed out ({model}) — API is unresponsive"
+            hint = f"LLM provider timed out ({model}) after retries — API is unresponsive"
         elif "APIConnectionError" in exc_type or "connection" in msg.lower():
             hint = "network error — check your connection"
         else:

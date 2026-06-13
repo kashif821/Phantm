@@ -16,8 +16,8 @@ def _mask(key: str, value: Any | None) -> str:
     s = str(value)
     if key in _SECRET_KEYS:
         if len(s) <= 8:
-            return "[SET]"
-        return s[:4] + "****"
+            return "********"
+        return f"{'*' * (len(s) - 4)}{s[-4:]}"
     return s
 
 

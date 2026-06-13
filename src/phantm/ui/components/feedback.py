@@ -1,3 +1,4 @@
+from rich.markup import escape
 from rich.panel import Panel
 from phantm.ui.console import console
 from phantm.ui.themes import (
@@ -10,19 +11,19 @@ from phantm.ui.themes import (
 
 
 def print_error(message: str) -> None:
-    console.print(f"[{COLOR_DANGER}][ERROR][/] {message}")
+    console.print(f"[{COLOR_DANGER}][ERROR][/] {escape(message)}")
 
 
 def print_warning(message: str) -> None:
-    console.print(f"[{COLOR_WARNING}][WARNING][/] {message}")
+    console.print(f"[{COLOR_WARNING}][WARNING][/] {escape(message)}")
 
 
 def print_success(message: str) -> None:
-    console.print(f"[{COLOR_SUCCESS}][SUCCESS][/] {message}")
+    console.print(f"[{COLOR_SUCCESS}][SUCCESS][/] {escape(message)}")
 
 
 def print_info(message: str) -> None:
-    console.print(f"[{COLOR_INFO}][INFO][/] {message}")
+    console.print(f"[{COLOR_INFO}][INFO][/] {escape(message)}")
 
 
 def print_degraded_notice(state: str, message: str, action: str) -> None:

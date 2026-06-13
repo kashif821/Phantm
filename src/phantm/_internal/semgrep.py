@@ -1,3 +1,4 @@
+from pathlib import Path
 import subprocess
 import json
 from phantm.rules.models import Finding
@@ -12,8 +13,9 @@ _SEVERITY_MAP = {
 
 def run_semgrep(target_path: str) -> list[Finding]:
     try:
+        safe_target = str(Path(target_path).resolve())
         result = subprocess.run(
-            ["semgrep", "--config", "auto", "--json", "-q", target_path],
+            ["semgrep", "--config", "auto", "--json", "-q", safe_target],
             capture_output=True,
             text=True,
             timeout=120,

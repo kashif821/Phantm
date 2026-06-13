@@ -48,6 +48,7 @@ def run_scan(path: str) -> None:
     )
 
     findings = []
+    skipped_count = 0
 
     for file_path in files_to_scan:
         rel_path = file_path.relative_to(target.parent) if target.is_dir() else file_path.name
@@ -61,6 +62,7 @@ def run_scan(path: str) -> None:
             response = ask_model(system_prompt=system_prompt, user_prompt=snippet)
         except PhantmLLMError as e:
             print_warning(f"Skipped {rel_path}: {e}")
+            skipped_count += 1
             continue
 
         cleaned = response.strip().strip("`").removeprefix("json").strip()
@@ -74,19 +76,20 @@ def run_scan(path: str) -> None:
                 findings.append({"file": str(rel_path), "reason": "Potential issue detected via text fallback."})
 
     print()
-    if findings:
+    if skipped_count > 0:
+        print_error(f"Scan incomplete: {skipped_count} file(s) were skipped due to API or network errors.")
+        exit_code = 2
+    elif findings:
         print_warning(f"Detected {len(findings)} vulnerable file(s):")
         for issue in findings:
             console.print(
                 f"  [red]✗[/red] [bold white]{issue['file']}[/bold white]: "
                 f"[yellow]{issue['reason']}[/yellow]"
             )
-        print()
+        exit_code = 1
     else:
         print_success("All scanned files appear secure.")
+        exit_code = 0
 
-    findings_count = len(findings)
-    exit_code = 1 if findings_count > 0 else 0
-
-    render_scan_summary(str(target), findings_count, exit_code)
+    render_scan_summary(str(target), len(findings), exit_code)
     sys.exit(exit_code)

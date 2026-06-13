@@ -27,11 +27,15 @@ def print_info(message: str) -> None:
 
 
 def print_degraded_notice(state: str, message: str, action: str) -> None:
+    safe_state = escape(state)
+    safe_message = escape(message)
+    safe_action = escape(action)
+
     console.print(
         Panel.fit(
-            f"[bold {COLOR_WARNING}]{state}[/]\n\n"
-            f"{message}\n\n"
-            f"[{COLOR_DIM}]{action}[/]",
+            f"[bold {COLOR_WARNING}]{safe_state}[/]\n\n"
+            f"{safe_message}\n\n"
+            f"[{COLOR_DIM}]{safe_action}[/]",
             border_style=COLOR_WARNING,
         )
     )

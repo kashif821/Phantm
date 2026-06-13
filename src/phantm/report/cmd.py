@@ -31,13 +31,17 @@ def default_report() -> None:
         console.print(f"[{COLOR_INFO}]No scans have been run yet.[/]")
         return
 
-    scan = data["scan"]
-    findings = data["findings"]
+    scan_info = data.get("scan", {})
+    findings = data.get("findings", [])
+
+    if not scan_info:
+        print_error("Report data is corrupted or empty.")
+        return
 
     summary = Panel.fit(
-        f"[bold]Target:[/] {scan['target_path']}\n"
-        f"[bold]Timestamp:[/] {scan['timestamp']}\n"
-        f"[bold]Total Findings:[/] {scan['findings_count']}",
+        f"[bold]Target:[/] {scan_info.get('target_path', 'N/A')}\n"
+        f"[bold]Timestamp:[/] {scan_info.get('timestamp', 'N/A')}\n"
+        f"[bold]Total Findings:[/] {scan_info.get('findings_count', 0)}",
         title="Scan Summary",
         border_style=COLOR_INFO,
     )

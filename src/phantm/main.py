@@ -24,10 +24,19 @@ def main(ctx: typer.Context) -> None:
 
 def _ensure_phantm_dir() -> None:
     config_dir = Path.home() / ".phantm"
-    config_dir.mkdir(parents=True, exist_ok=True)
-    os.chmod(config_dir, 0o700)
+    config_file = config_dir / "config.toml"
+
+    if not config_dir.exists():
+        config_dir.mkdir(parents=True, exist_ok=True)
+
+    if not config_dir.is_symlink():
+        os.chmod(config_dir, 0o700)
+
     (config_dir / ".env").touch(exist_ok=True)
-    (config_dir / "config.toml").write_text("")
+
+    if not config_file.exists():
+        config_file.touch(mode=0o600)
+        config_file.write_text('default_model = "cerebras/zai-glm-4.7"\n')
 
     from phantm._internal.db import init_db
 

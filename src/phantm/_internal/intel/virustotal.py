@@ -1,3 +1,4 @@
+import urllib.parse
 import requests
 from phantm._internal.db import get_intel_cache, set_intel_cache
 from phantm._internal.intel.exceptions import IntelRateLimitError, IntelAuthError
@@ -9,7 +10,8 @@ def check_artifact(artifact: str, artifact_type: str, api_key: str, ttl_hours: i
     if cached is not None:
         return cached
 
-    url = f"https://www.virustotal.com/api/v3/{artifact_type}/{artifact}"
+    safe_artifact = urllib.parse.quote(artifact, safe="")
+    url = f"https://www.virustotal.com/api/v3/{artifact_type}/{safe_artifact}"
     resp = requests.get(
         url,
         headers={"x-apikey": api_key, "Accept": "application/json"},

@@ -29,25 +29,36 @@ def ask_model(
         settings = PhantmSettings()
         model = settings.default_model
 
+    raw_provider = model.split("/")[0] if "/" in model else ""
+    provider = "".join(char for char in raw_provider if char.isalnum()).upper()
+    key_name = f"{provider}_API_KEY" if provider else "_API_KEY"
+    dynamic_key = os.getenv(key_name) or os.getenv("OPENAI_API_KEY")
+
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
     ]
 
     try:
-        response = completion(model=model, messages=messages, num_retries=2, timeout=45)
+        response = completion(
+            model=model,
+            messages=messages,
+            num_retries=2,
+            timeout=45,
+            api_key=dynamic_key,
+        )
     except OpenAIError as e:
         exc_type = type(e).__name__
         msg = str(e)
 
         if "AuthenticationError" in exc_type or "auth" in msg.lower():
-            hint = "authentication failed — check your API key"
+            hint = f"Authentication failed for {provider} — check your {key_name} in ~/.phantm/.env"
         elif "RateLimitError" in exc_type or "rate_limit" in msg.lower():
-            hint = f"dynamic provider rate limit hit ({model}) — check your plan"
+            hint = f"Dynamic provider rate limit hit ({model}) — check your plan"
         elif "Timeout" in exc_type or "timeout" in msg.lower():
             hint = f"LLM provider timed out ({model}) after retries — API is unresponsive"
         elif "APIConnectionError" in exc_type or "connection" in msg.lower():
-            hint = "network error — check your connection"
+            hint = "Network error — check your connection"
         else:
             hint = f"{exc_type}: {msg}"
 

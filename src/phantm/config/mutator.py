@@ -1,6 +1,7 @@
 import tomlkit
 from pathlib import Path
 from typing import Any
+from phantm.ui.components.feedback import print_error
 
 
 def _coerce(value: str) -> Any:
@@ -35,8 +36,9 @@ def set_config_value(key: str, value: str) -> None:
     for part in parts[:-1]:
         if part not in container:
             container[part] = tomlkit.table()
-        if not isinstance(container.get(part), tomlkit.items.Table):
-            container[part] = tomlkit.table()
+        elif not isinstance(container.get(part), dict):
+            print_error(f"Cannot set '{key}' because '{part}' is already a flat value, not a section.")
+            raise ValueError("Data integrity violation")
         container = container[part]
 
     container[parts[-1]] = _coerce(value)

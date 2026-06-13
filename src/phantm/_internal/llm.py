@@ -32,7 +32,7 @@ def ask_model(
     ]
 
     try:
-        response = completion(model=model, messages=messages, num_retries=0)
+        response = completion(model=model, messages=messages, num_retries=0, timeout=10)
     except OpenAIError as e:
         exc_type = type(e).__name__
         msg = str(e)
@@ -44,11 +44,19 @@ def ask_model(
                 f"dynamic provider rate limit hit ({model}) "
                 f"— check your plan or wait before retrying"
             )
+        elif "Timeout" in exc_type or "timeout" in msg.lower():
+            hint = f"LLM provider timed out ({model}) — API is unresponsive"
         elif "APIConnectionError" in exc_type or "connection" in msg.lower():
             hint = "network error — check your connection"
         else:
             hint = f"{exc_type}: {msg}"
 
         raise PhantmLLMError(hint) from e
+
+    if not getattr(response, "choices", None) or len(response.choices) == 0:
+        raise PhantmLLMError(
+            f"Model {model} returned an empty response "
+            "(likely tripped a safety filter)."
+        )
 
     return response.choices[0].message.content

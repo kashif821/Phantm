@@ -1,7 +1,6 @@
 import ast
 import json
 import os
-import re
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -11,27 +10,18 @@ from phantm._internal.intel.abuseipdb import check_ip
 from phantm._internal.intel.exceptions import IntelRateLimitError, IntelAuthError
 from phantm._internal.intel.virustotal import check_artifact
 from phantm._internal.llm import ask_model, PhantmLLMError
+from phantm.config.policy import (
+    RISKY_KEYWORD_RE,
+    IP_RE,
+    URL_RE,
+    MAX_FILE_SIZE,
+    VALID_SEVERITIES,
+    is_risky_call,
+)
 from phantm.config.settings import PhantmSettings
 from phantm.ui.components.feedback import print_info, print_error, print_warning, print_success
 from phantm.ui.layouts.scan_report import render_scan_summary
 from phantm.ui.console import console
-
-_MAX_FILE_SIZE = 500 * 1024
-
-_RISKY_CALLS: set[str] = {
-    "os.system", "os.popen", "subprocess.run", "subprocess.Popen",
-    "subprocess.call", "subprocess.check_output", "eval", "exec",
-    "requests.get", "requests.post", "requests.put", "requests.delete",
-    "openai.ChatCompletion.create", "openai.chat.completions.create",
-    "litellm.completion",
-}
-
-_RISKY_KEYWORD_RE = re.compile(
-    r"(os\.system|os\.popen|subprocess\.\w+|eval\(|exec\(|requests\.|openai\.|litellm\.)"
-)
-
-_IP_RE = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
-_URL_RE = re.compile(r"https?://[^\s'\"\)]+")
 
 
 def get_scannable_files(target_dir: Path) -> list[Path]:
@@ -47,7 +37,7 @@ def get_scannable_files(target_dir: Path) -> list[Path]:
             size = path.stat().st_size
         except OSError:
             continue
-        if size < 15 or size > _MAX_FILE_SIZE:
+        if size < 15 or size > MAX_FILE_SIZE:
             continue
         files.append(path)
     return files
@@ -82,7 +72,7 @@ def extract_risky_blocks(file_path: Path) -> list[dict]:
     except SyntaxError:
         blocks: list[dict] = []
         for lineno, line in enumerate(text.splitlines(), start=1):
-            if _RISKY_KEYWORD_RE.search(line):
+            if RISKY_KEYWORD_RE.search(line):
                 snippet = line.strip()[:200]
                 blocks.append({
                     "file": str(file_path),
@@ -109,7 +99,7 @@ def extract_risky_blocks(file_path: Path) -> list[dict]:
             continue
         full_name = ".".join(reversed(parts))
 
-        if full_name not in _RISKY_CALLS:
+        if not is_risky_call(full_name):
             continue
 
         enclosing = _enclosing_name(node, tree)
@@ -139,8 +129,8 @@ def gather_threat_intel(code_blocks: list[dict]) -> str:
     ab_ttl = settings.cache_abuseipdb_ttl_hours
 
     combined_text = "\n".join(b.get("snippet", "") for b in code_blocks)
-    ips = set(_IP_RE.findall(combined_text))
-    urls = set(_URL_RE.findall(combined_text))
+    ips = set(IP_RE.findall(combined_text))
+    urls = set(URL_RE.findall(combined_text))
 
     context_lines: list[str] = []
 
@@ -212,8 +202,9 @@ def _run_llm_for_file(blocks: list[dict], threat_context: str, model: str, rel_p
 
     cleaned = raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
     array_start = cleaned.find("[")
-    if array_start > 0:
-        cleaned = cleaned[array_start:]
+    array_end = cleaned.rfind("]")
+    if array_start >= 0 and array_end > array_start:
+        cleaned = cleaned[array_start : array_end + 1]
     try:
         parsed = json.loads(cleaned)
     except json.JSONDecodeError:
@@ -225,7 +216,7 @@ def _run_llm_for_file(blocks: list[dict], threat_context: str, model: str, rel_p
 
     results: list[dict] = []
     for item in parsed:
-        if isinstance(item, dict) and item.get("severity", "").upper() in {"CRITICAL", "HIGH", "MEDIUM", "LOW"}:
+        if isinstance(item, dict) and item.get("severity", "").upper() in VALID_SEVERITIES:
             item["file"] = rel_path
             results.append(item)
 
@@ -243,15 +234,16 @@ def run_scan(path: str) -> None:
 
 
 def _run_scan(path: str) -> None:
-    target = Path(path).resolve()
+    raw = Path(path)
+    if raw.is_symlink():
+        print_error("Security Violation: Symlinks are not allowed as scan targets.")
+        sys.exit(4)
+
+    target = raw.resolve()
 
     if not target.exists():
         print_error(f"Target does not exist: {path}")
         sys.exit(2)
-
-    if target.is_symlink():
-        print_error("Security Violation: Symlinks are not allowed as scan targets.")
-        sys.exit(4)
 
     files_to_scan: list[Path] = []
     if target.is_file():

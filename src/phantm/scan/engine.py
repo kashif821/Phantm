@@ -58,11 +58,17 @@ def _resolve_parent(file_path: Path, target: Path) -> Path:
     return parent
 
 
-def _enclosing_name(node: ast.AST) -> str:
-    for parent in ast.walk(node):
-        if isinstance(parent, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
-            return parent.name
-    return "<module>"
+def _enclosing_name(node: ast.AST, tree: ast.AST | None = None) -> str:
+    container = tree or node
+    candidates: list[str] = []
+    for n in ast.walk(container):
+        if not isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            continue
+        start = getattr(n, "lineno", 0)
+        end = getattr(n, "end_lineno", start)
+        if start <= getattr(node, "lineno", 0) <= end:
+            candidates.append(n.name)
+    return candidates[-1] if candidates else "<module>"
 
 
 def extract_risky_blocks(file_path: Path) -> list[dict]:
@@ -106,7 +112,7 @@ def extract_risky_blocks(file_path: Path) -> list[dict]:
         if full_name not in _RISKY_CALLS:
             continue
 
-        enclosing = _enclosing_name(node)
+        enclosing = _enclosing_name(node, tree)
         lineno = getattr(node, "lineno", 1)
         end_lineno = getattr(node, "end_lineno", lineno)
         snippet = ast.get_source_segment(text, node)
@@ -205,6 +211,9 @@ def _run_llm_for_file(blocks: list[dict], threat_context: str, model: str, rel_p
         return []
 
     cleaned = raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
+    array_start = cleaned.find("[")
+    if array_start > 0:
+        cleaned = cleaned[array_start:]
     try:
         parsed = json.loads(cleaned)
     except json.JSONDecodeError:
@@ -224,6 +233,16 @@ def _run_llm_for_file(blocks: list[dict], threat_context: str, model: str, rel_p
 
 
 def run_scan(path: str) -> None:
+    try:
+        _run_scan(path)
+    except SystemExit:
+        raise
+    except Exception as exc:
+        print_error(f"Engine crash: {exc}")
+        sys.exit(4)
+
+
+def _run_scan(path: str) -> None:
     target = Path(path).resolve()
 
     if not target.exists():

@@ -1,113 +1,74 @@
 # 👻 Phantm
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/badge/Release-v1.0.0-blue.svg)](https://github.com/phantm/phantm/releases)
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
-[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)]()
-[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)]()
-
 **A cost-optimized, 3-tier AI security scanner prototype.**
 
----
-
-## ⚡ The Problem: Why Another AI Scanner?
-Most AI security scanners naively dump entire codebases into an LLM context window. This brute-force approach leads to:
-- 💸 **Massive Token Costs:** Paying to scan boilerplate and clean code.
-- 🐢 **Slow Execution & Rate Limiting:** Hitting API limits instantly and waiting minutes or hours for results.
-- 🔒 **Privacy Concerns:** Sending unnecessary proprietary code to third-party models.
-
-**Phantm is different.** We built a highly-optimized, localized **3-Tier Pipeline** that pre-filters, slices, and enriches your code *before* it ever touches an LLM.
+## ⚡ The Problem
+Sending entire repositories to LLMs for security analysis is slow, exposes proprietary code unnecessarily, and results in massive token costs. Most of the scanned code is boilerplate or inherently safe. Phantm solves this by pre-filtering code locally and only sending suspicious blocks to the LLM.
 
 ---
 
 ## 🏗️ The 3-Tier Architecture
 
-Phantm heavily reduces token usage and execution time by using a surgical approach to AI auditing:
+Phantm uses a surgical approach to code auditing, drastically reducing token usage and execution time:
 
-### 🛡️ Tier 1: Static Analysis (Pre-Filter)
-Before hitting any external API, Phantm utilizes Python's built-in `ast` module to statically slice and analyze files locally.
-* **Smart Extraction:** It searches for risky sinks and calls (e.g., `os.system`, `subprocess`, `requests`, `litellm`) and extracts *only* the specific offending function or class blocks.
-* **Zero-Cost Skipping:** Completely clean files are skipped locally.
-* **Performance Limits:** Enforces a strict 500KB file limit to prevent memory exhaustion on massive binaries or minified files.
+### 🛡️ Tier 1: AST Slicing (Pre-Filter)
+Before any external API is hit, Phantm utilizes Python's built-in `ast` module to statically slice files locally. It filters out safe code and extracts only the specific function or class blocks containing risky sinks and calls (e.g., `os.system`, `subprocess`, `requests`, `litellm`).
 
-### 🧠 Tier 2: Threat Intel & Local SQLite Cache
-Context is king. Phantm automatically extracts hardcoded IPs and URLs from the Tier 1 AST blocks using advanced regex.
-* **Local First:** Checks a local, strictly-permissioned (`0o600`) SQLite cache (`~/.phantm/phantm.db`) for known threat intelligence.
-* **External Providers:** On a cache miss, it routes queries to **VirusTotal** or **AbuseIPDB**.
-* **Smart Caching:** Results are cached locally with a TTL (24h/48h) to prevent duplicate API calls across runs.
+### 🧠 Tier 2: Threat Intel Caching
+Phantm extracts hardcoded IPs and URLs from the Tier 1 AST blocks using advanced regex. These artifacts are checked against a local SQLite TTL cache. On a cache miss, Phantm queries external providers like **VirusTotal** or **AbuseIPDB** and caches the result.
 
 ### 🤖 Tier 3: Targeted LLM Dispatch
-Once the code is localized and enriched, Phantm dispatches the minimal payload.
-* **Surgical Precision:** Packages only the isolated AST blocks combined with Threat Intel context.
-* **Universal Router:** Routes through LiteLLM, allowing you to use any provider (OpenAI, Anthropic, local models).
-* **Cost Savings:** Drastically reduces the context window size, saving significant token costs compared to naive scanners.
+The isolated AST blocks, combined with any Threat Intel context, are routed through a Universal LLM Router (LiteLLM). This minimal payload ensures a drastically reduced context window, saving costs while delivering targeted analysis.
 
 ---
 
-## 🔐 Security & Hardening
+## 🔐 Current Security Model & Hardening
 
-Security tools must be secure themselves. Key hardening features currently include:
+Security tools must be built securely. Key hardening features include:
 
-* 🚫 **Directory Traversal & Symlink Prevention:** Strict path resolution prevents symlink hijacking and escapes.
-* ⏱️ **TOCTOU Protections:** Mitigates Time-of-Check to Time-of-Use race conditions during file operations.
-* 🏛️ **Jailed Execution & Strict Permissions:** Enforces strict `0o600` permissions on the local database (`~/.phantm/phantm.db`) to prevent OS umask leaks.
-* 🤫 **Zero-Knowledge Secret Masking:** API keys are never leaked. Masked as `********` in CLI outputs and use `repr=False` in Pydantic models to prevent log leaks.
-* 🛡️ **UI Injection Prevention:** Hardened against Rich terminal markup injection attacks from malicious source code.
+* **Robust Testing:** A comprehensive 54-test suite that includes adversarial prompt injection and rigorous path handling checks.
+* **Strict Permissions & Masking:** Enforces strict `0o600` permissions on the local database (`~/.phantm/phantm.db`) to prevent OS umask leaks, along with zero-knowledge secret masking.
+* **Directory Escape Prevention:** Symlinks are strictly rejected *before* path resolution to prevent symlink hijacking and directory escapes.
 
 ---
 
-## ⚠️ Current Maturity & Limitations
+## ⚠️ Current Maturity & Known Gaps (v1.0.0)
 
-Phantm is currently in an early-stage/prototype phase (v1.0.0). We believe in brutal transparency:
+Phantm is a prototype. We believe in brutal transparency regarding its limitations:
 
-* Path and workspace boundary protections are implemented, but rely on local convention rather than a rigorous sandboxed file access model.
-* The LLM trust boundary relies on JSON parsing heuristics, which may be vulnerable to sophisticated prompt injection.
-* Scanning rules (Tier 1) are currently based on a narrow allowlist of risky AST nodes.
-
----
-
-## 🗺️ Roadmap
-
-Our immediate goals for the next iterations of Phantm:
-* Decoupling policy from the engine.
-* Hardening path resolution into a single canonical utility.
-* Building a robust adversarial test suite.
+* Phantm relies heavily on a hardcoded allowlist of risky AST nodes. It does not perform deep taint-analysis.
+* The LLM trust boundary relies on JSON extraction heuristics. Sophisticated prompt injection within the audited code could theoretically bypass the parser.
+* Path jailing relies on local convention rather than a rigorous OS-level sandbox.
 
 ---
 
-## 🚀 Quickstart & Usage
+## 🚀 Usage & Configuration
 
-Phantm provides a beautiful, intuitive CLI built with developers in mind.
+### Installation
+```bash
+pip install -e .
+```
 
 ### Configuration
-Set your API keys (masked securely in the background):
 ```bash
-phantm config set OPENAI_API_KEY <your-key>
-phantm config set VIRUSTOTAL_API_KEY <your-key>
-phantm config set ABUSEIPDB_API_KEY <your-key>
+phantm config set CEREBRAS_API_KEY <key>
 ```
 
 ### Scanning
-Run a fast, parallelized scan using `ThreadPoolExecutor`:
 ```bash
 phantm scan run src/
 ```
 
 ### Reporting
-Render a beautiful Rich terminal table of your findings:
 ```bash
 phantm report
 ```
 
-Export your SQLite findings to a static Markdown report for your team:
-```bash
-phantm report -o compliance.md
-```
-
 ---
 
-## 🚦 Strict Exit Codes (For CI/CD)
-Phantm is built for automated pipelines. It returns standard, reliable exit codes:
+## 🚦 Exit Codes
+
+Phantm is built for automated pipelines and returns standard exit codes:
 
 * `0` : Clean scan (No vulnerabilities found)
 * `1` : Vulnerabilities found
@@ -117,12 +78,4 @@ Phantm is built for automated pipelines. It returns standard, reliable exit code
 
 ---
 
-## 🧪 Testing & Reliability
-Phantm boasts a lightning-fast, fully mocked Pytest suite ensuring maximum reliability without side effects.
-* **Speed:** 34 tests passing in ~4.5s.
-* **Air-gapped:** Zero network calls during unit testing.
-* **Clean:** Zero disk contamination (strict use of Pytest's `tmp_path`).
-
----
-
-**Built with 💻 by the Phantm Contributors.**
+**Made by UIT RGPV student named Kashif Khan.**

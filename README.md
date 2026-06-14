@@ -6,7 +6,7 @@
 [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)]()
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)]()
 
-**Enterprise-grade, cost-optimized AI code auditing CLI.**
+**A cost-optimized, 3-tier AI security scanner prototype.**
 
 ---
 
@@ -46,13 +46,32 @@ Once the code is localized and enriched, Phantm dispatches the minimal payload.
 
 ## 🔐 Security & Hardening
 
-We engineered Phantm like a fortress. Security tools must be secure themselves. Key hardening features include:
+Security tools must be secure themselves. Key hardening features currently include:
 
 * 🚫 **Directory Traversal & Symlink Prevention:** Strict path resolution prevents symlink hijacking and escapes.
 * ⏱️ **TOCTOU Protections:** Mitigates Time-of-Check to Time-of-Use race conditions during file operations.
 * 🏛️ **Jailed Execution & Strict Permissions:** Enforces strict `0o600` permissions on the local database (`~/.phantm/phantm.db`) to prevent OS umask leaks.
 * 🤫 **Zero-Knowledge Secret Masking:** API keys are never leaked. Masked as `********` in CLI outputs and use `repr=False` in Pydantic models to prevent log leaks.
 * 🛡️ **UI Injection Prevention:** Hardened against Rich terminal markup injection attacks from malicious source code.
+
+---
+
+## ⚠️ Current Maturity & Limitations
+
+Phantm is currently in an early-stage/prototype phase (v1.0.0). We believe in brutal transparency:
+
+* Path and workspace boundary protections are implemented, but rely on local convention rather than a rigorous sandboxed file access model.
+* The LLM trust boundary relies on JSON parsing heuristics, which may be vulnerable to sophisticated prompt injection.
+* Scanning rules (Tier 1) are currently based on a narrow allowlist of risky AST nodes.
+
+---
+
+## 🗺️ Roadmap
+
+Our immediate goals for the next iterations of Phantm:
+* Decoupling policy from the engine.
+* Hardening path resolution into a single canonical utility.
+* Building a robust adversarial test suite.
 
 ---
 

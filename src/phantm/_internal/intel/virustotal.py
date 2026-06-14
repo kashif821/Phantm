@@ -5,8 +5,8 @@ from phantm._internal.intel.exceptions import IntelRateLimitError, IntelAuthErro
 
 
 def check_artifact(artifact: str, artifact_type: str, api_key: str, ttl_hours: int) -> dict:
-    cache_key = f"{artifact_type}:{artifact}"
-    cached = get_intel_cache(cache_key, "virustotal", ttl_hours)
+    artifact_id = f"{artifact_type}:{artifact}"
+    cached = get_intel_cache(artifact_id, ttl_hours)
     if cached is not None:
         return cached
 
@@ -26,5 +26,5 @@ def check_artifact(artifact: str, artifact_type: str, api_key: str, ttl_hours: i
     resp.raise_for_status()
 
     payload = resp.json().get("data", {})
-    set_intel_cache(cache_key, "virustotal", payload)
+    set_intel_cache(artifact_id, artifact_type, payload)
     return payload

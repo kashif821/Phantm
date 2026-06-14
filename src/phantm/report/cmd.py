@@ -44,7 +44,7 @@ def default_report() -> None:
     summary = Panel.fit(
         f"[bold]Target:[/] {scan_info.get('target_path', 'N/A')}\n"
         f"[bold]Timestamp:[/] {scan_info.get('timestamp', 'N/A')}\n"
-        f"[bold]Total Findings:[/] {scan_info.get('findings_count', 0)}",
+        f"[bold]Total Findings:[/] {scan_info.get('total_findings', 0)}",
         title="Scan Summary",
         border_style=COLOR_INFO,
     )
@@ -58,16 +58,14 @@ def default_report() -> None:
     table.add_column("Line", style=COLOR_DIM, no_wrap=True)
     table.add_column("Severity", no_wrap=True)
     table.add_column("Type", style="cyan", no_wrap=True)
-    table.add_column("Source", style="yellow", no_wrap=True)
     table.add_column("Description")
 
     for f in findings:
-        line_str = str(f["line"]) if f["line"] is not None else "-"
+        line_str = str(f["line_number"]) if f.get("line_number") else "-"
         table.add_row(
             line_str,
             _color_severity(f["severity"]),
-            f["type"],
-            f["source"],
+            f["vuln_type"],
             f["description"],
         )
 

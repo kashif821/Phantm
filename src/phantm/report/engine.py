@@ -18,10 +18,10 @@ def get_latest_report_data() -> dict | None:
     if file_stat.st_mode & 0o077:
         raise PermissionError(f"Insecure permissions on {db_path}. Run 'chmod 600' to secure it.")
 
-    scans = get_recent_scans(limit=1, db_path=db_path)
+    scans = get_recent_scans(limit=1)
     if not scans:
         return None
 
     scan = scans[0]
-    findings = get_findings_for_scan(scan["id"])
+    findings = get_findings_for_scan(scan["scan_id"])
     return {"scan": scan, "findings": findings}

@@ -4,7 +4,7 @@ from phantm._internal.intel.exceptions import IntelRateLimitError, IntelAuthErro
 
 
 def check_ip(ip: str, api_key: str, ttl_hours: int) -> dict:
-    cached = get_intel_cache(ip, "abuseipdb", ttl_hours)
+    cached = get_intel_cache(ip, ttl_hours)
     if cached is not None:
         return cached
 
@@ -22,5 +22,5 @@ def check_ip(ip: str, api_key: str, ttl_hours: int) -> dict:
     resp.raise_for_status()
 
     payload = resp.json().get("data", {})
-    set_intel_cache(ip, "abuseipdb", payload)
+    set_intel_cache(ip, "ip", payload)
     return payload
